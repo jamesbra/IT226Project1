@@ -68,6 +68,7 @@ public class DataIntegration
 		out.close();
 	}
 
+	// Need to create logic for if course number is missing and if the semester/year is missing
 	public int[] gradeSearch(String course, String semester, String year)
 	{
 		int[] grades = new int[5];
@@ -97,6 +98,9 @@ public class DataIntegration
 				{
 					grades[4]++;
 				}
+			}
+			else if (studentList.get(i).findCourse(semester, year)){
+				
 			}
 		}
 		return grades;

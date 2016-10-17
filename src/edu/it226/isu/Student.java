@@ -66,4 +66,10 @@ public class Student
 		}
 		return null;
 	}
+
+	public boolean findCourse(String semester, String year)
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
