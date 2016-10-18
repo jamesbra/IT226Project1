@@ -8,28 +8,56 @@ public class CourseData
 	private String courseName;
 	private String semester;
 	private String year;
+	private char letterGrade;
 	private double overallGrade;
 	private ArrayList<Assignments> assignmentData;
-	
+
 	public String getCourse()
 	{
 		return courseName;
 	}
+
 	public String getSemester()
 	{
 		return semester;
 	}
-	public String getYear(){
+
+	public String getYear()
+	{
 		return year;
 	}
-	public double getOverallGrade()
+
+	public char getLetterGrade()
 	{
-		return overallGrade;
+		return letterGrade;
 	}
+
+	/**
+	 * This method will return the assignment title and grade
+	 */
 	@Override
-	public String toString(){
-		return courseName;
-		
+	public String toString()
+	{
+		String output = "";
+		for (int i = 0; i < assignmentData.size(); i++)
+		{
+			output += assignmentData.get(i).getTitle() + "," + assignmentData.get(i).getGrade() + ",";
+		}
+		return output;
+	}
+
+	/**
+	 * This method will create the top columns for saving student data or pressing 'S'
+	 * @return
+	 */
+	public String constructColumns()
+	{
+		String output = "";
+		for (int i = 0; i < assignmentData.size(); i++){
+			output += courseName + "-" + semester + "-" + year + "-" + assignmentData.get(i).getTitle() + ",";
+		}
+		output += courseName + "-" + semester + "-" + year + "-" + "Letter Grade" + ",";
+		return output;
 	}
 
 }

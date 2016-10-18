@@ -30,10 +30,14 @@ public class Student
 
 	public String printCourses()
 	{
-		String data = "";
+		String data = userID;
+		for (int i = 0; i< coursesTaken.size(); i++){
+			data += coursesTaken.get(i).constructColumns() + ",";
+		}
+		data += "\n";
 		for (int i = 0; i < coursesTaken.size(); i++)
 		{
-			data = name + "," + userID + "," + coursesTaken.get(i).toString()
+			data += coursesTaken.get(i).toString()
 					+ "\n";
 		}
 		return data;

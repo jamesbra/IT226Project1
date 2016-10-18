@@ -13,7 +13,7 @@ public class DataIntegration
 	private Scanner readFile;
 	private File myFile;
 
-	public void compileData(String fileName)
+	public void compileData(String fileName, String semester, String year)
 	{
 		CharSequence ch1 = "id";
 		try
@@ -68,40 +68,40 @@ public class DataIntegration
 		out.close();
 	}
 
-	// Need to create logic for if course number is missing and if the semester/year is missing
+	// Need to create logic for if course number is missing and if the
+	// semester/year is missing
 	public int[] gradeSearch(String course, String semester, String year)
 	{
 		int[] grades = new int[5];
 		for (int i = 0; i < studentList.size(); i++)
 		{
+			
 			if (studentList.get(i).tookCourse(course, semester, year))
 			{
-				double grade = studentList.get(i)
-						.findCourse(course, semester, year).getOverallGrade();
-				if (grade >= 90)
+				char grade = studentList.get(i)
+						.findCourse(course, semester, year).getLetterGrade();
+				switch (grade)
 				{
+				case 'A':
 					grades[0]++;
-				}
-				else if (grade >= 80)
-				{
+				case 'B':
 					grades[1]++;
-				}
-				else if (grade >= 70)
-				{
+				case 'C':
 					grades[2]++;
-				}
-				else if (grade >= 60)
-				{
+				case 'D':
 					grades[3]++;
-				}
-				else
-				{
+				default:
 					grades[4]++;
+
 				}
 			}
-			else if (studentList.get(i).findCourse(semester, year)){
-				
+			else if (course.equals("")){
+				studentList.get(i).findCourse(semester, year);
 			}
+			else if (semester.equals("") && year.equals("")){
+					studentList.get(i).findCourse(semester, year);
+			}
+		
 		}
 		return grades;
 
