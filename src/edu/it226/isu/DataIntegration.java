@@ -5,10 +5,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.TreeMap;
 
 public class DataIntegration
 {
 	private ArrayList<Student> studentList;
+	private TreeMap<String, Student> studentList2;
 	private StringTokenizer stk;
 	private Scanner readFile;
 	private File myFile;
@@ -26,14 +28,40 @@ public class DataIntegration
 			System.out.println("Error opening file: closing program");
 			System.exit(1);
 		}
+		int idIndex = 0;
+		int totalIndex = 0;
+		int letterGradeIndex =0;
+		int count = 0;
 		while (readFile.hasNextLine())
 		{
+			count = 0;
 			stk = new StringTokenizer(readFile.nextLine(), ",", false);
 			while (stk.hasMoreTokens())
 			{
+				count++;
 				String token = stk.nextToken();
 
-				// if (token.contains("id")))
+				if (token.toLowerCase().contains("id")){
+					idIndex = count;
+					continue;
+				}
+				else if (token.toLowerCase().contains("name")){
+					
+				}
+				else if (token.toLowerCase().contains("total")){
+					totalIndex = count;
+					continue;
+				}
+				else if (token.toLowerCase().contains("letter")){
+					letterGradeIndex = 0;
+					continue;
+				}
+//				switch (count){
+//				case idIndex:
+//					if (studentList2.containsKey(token)){
+//						
+//					}
+//				}
 			}
 		}
 	}
@@ -51,7 +79,9 @@ public class DataIntegration
 			System.out.println("Error creating output file: closing program");
 			System.exit(1);
 		}
-
+		if (studentList2.containsKey(userID)){
+			studentList2.get(userID).printCourses();
+		}
 		for (int i = 0; i < studentList.size(); i++)
 		{
 			if (userID.equals(studentList.get(i).getUserID()))
