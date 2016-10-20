@@ -10,9 +10,23 @@ public class Student
 
 	public Student()
 	{
-
+		coursesTaken = new ArrayList();
 	}
 
+	public Student(String firstName, String lastName, String userID)
+	{
+		name = lastName + ", " + firstName;
+		this.userID = userID;
+		coursesTaken = new ArrayList();
+	}
+	
+	public Student(String name, String userID)
+	{
+		this.name = name;
+		this.userID = userID;
+		coursesTaken = new ArrayList();
+	}
+	
 	public void addCourse(CourseData courseName)
 	{
 		coursesTaken.add(courseName);
@@ -30,11 +44,11 @@ public class Student
 
 	public String printCourses()
 	{
-		String data = userID;
+		String data = "";
 		for (int i = 0; i< coursesTaken.size(); i++){
 			data += coursesTaken.get(i).constructColumns() + ",";
 		}
-		data += "\n";
+		data += "\n" + userID + ",";
 		for (int i = 0; i < coursesTaken.size(); i++)
 		{
 			data += coursesTaken.get(i).assignmentGradeOutput();
@@ -70,7 +84,6 @@ public class Student
 		return null;
 	}
 
-
 	public ArrayList<CourseData> findCourseOverAllSemesters(String course)
 	{
 		ArrayList<CourseData> coursesToBeReturned = new ArrayList<CourseData>();
@@ -91,5 +104,10 @@ public class Student
 			}
 		}
 		return coursesToBeReturned;
+	}
+	
+	public String toString()
+	{
+		return name + " " + userID;
 	}
 }

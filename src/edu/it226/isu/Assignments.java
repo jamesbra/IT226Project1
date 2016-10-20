@@ -6,6 +6,24 @@ public class Assignments
 	private String title;
 	private double grade;
 	
+	public Assignments()
+	{
+		
+	}
+	
+	public Assignments(String title, String comment, double grade)
+	{
+		this.title = title;
+		this.comment = comment;
+		this.grade = grade;
+	}
+	
+	public Assignments(String title, double grade)
+	{
+		this.title = title;
+		this.grade = grade;
+	}
+	
 	public String getTitle(){
 		return title;
 	}

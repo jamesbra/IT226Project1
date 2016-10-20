@@ -12,6 +12,11 @@ public class CourseData
 	private double overallGrade;
 	private ArrayList<Assignments> assignmentList;
 
+	public CourseData()
+	{
+		assignmentList = new ArrayList();
+	}
+	
 	public String getCourse()
 	{
 		return courseName;
@@ -47,14 +52,12 @@ public class CourseData
 	}
 
 	/**
-	 * This method will create the top columns for saving student data or
-	 * pressing 'S'
-	 * 
+	 * This method will create the top columns for saving student data or pressing 'S'
 	 * @return
 	 */
 	public String constructColumns()
 	{
-		String output = "";
+		String output = "Student ID" + ",";
 		for (int i = 0; i < assignmentList.size(); i++)
 		{
 			output += courseName + "-" + semester + "-" + year + "-"
@@ -64,5 +67,33 @@ public class CourseData
 				+ "Letter Grade" + ",";
 		return output;
 	}
+	
+	public void addAssignment(Assignments assign)
+	{
+		assignmentList.add(assign);
+	}
+	
+	public void addTotalGrade(double total)
+	{
+		overallGrade = total;
+	}
+	
+	public void addLetterGrade(char grade)
+	{
+		letterGrade = grade;
+	}
 
+	public void setSemester(String semester)
+	{
+		this.semester = semester;
+		
+	}
+	public void setCourseNumber(String courseNumber){
+		this.courseName = courseNumber;
+	}
+
+	public void setYear(String year)
+	{
+		this.year = year;
+	}
 }
