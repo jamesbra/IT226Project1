@@ -1,16 +1,15 @@
 package edu.it226.isu;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.TreeMap;
 
 public class DataIntegration
 {
 	private ArrayList<Student> studentList;
-	private TreeMap<String, Student> studentList2;
 	private StringTokenizer stk;
 	private Scanner readFile;
 	private File myFile;
@@ -23,46 +22,31 @@ public class DataIntegration
 			myFile = new File(fileName);
 			readFile = new Scanner(myFile);
 		}
-		catch (Exception e)
+		catch (FileNotFoundException e)
 		{
-			System.out.println("Error opening file: closing program");
-			System.exit(1);
+			System.out.println("File not found! Returning to menu");
+			return;
 		}
-		int idIndex = 0;
-		int totalIndex = 0;
-		int letterGradeIndex =0;
-		int count = 0;
+		ArrayList<String> master = new ArrayList<String>();
+		ArrayList<String> current = new ArrayList<String>();
+		stk = new StringTokenizer(readFile.nextLine(), ",", false);
+
+		while (readFile.hasNext())
+		{
+			master.add(readFile.next());
+		}
+
 		while (readFile.hasNextLine())
 		{
-			count = 0;
 			stk = new StringTokenizer(readFile.nextLine(), ",", false);
+			current = new ArrayList<String>();
 			while (stk.hasMoreTokens())
 			{
-				count++;
 				String token = stk.nextToken();
+				current.add(token);
 
-				if (token.toLowerCase().contains("id")){
-					idIndex = count;
-					continue;
-				}
-				else if (token.toLowerCase().contains("name")){
-					
-				}
-				else if (token.toLowerCase().contains("total")){
-					totalIndex = count;
-					continue;
-				}
-				else if (token.toLowerCase().contains("letter")){
-					letterGradeIndex = 0;
-					continue;
-				}
-//				switch (count){
-//				case idIndex:
-//					if (studentList2.containsKey(token)){
-//						
-//					}
-//				}
 			}
+
 		}
 	}
 
@@ -76,17 +60,15 @@ public class DataIntegration
 		}
 		catch (Exception e)
 		{
-			System.out.println("Error creating output file: closing program");
-			System.exit(1);
+			System.out.println("Error creating output file: returning to menu");
+			return;
 		}
-		if (studentList2.containsKey(userID)){
-			studentList2.get(userID).printCourses();
-		}
+
 		for (int i = 0; i < studentList.size(); i++)
 		{
 			if (userID.equals(studentList.get(i).getUserID()))
 			{
-				out.println(studentList.get(i).printCourses());
+				out.print(studentList.get(i).printCourses());
 				break;
 			}
 			if (i == studentList.size() - 1)
@@ -105,8 +87,62 @@ public class DataIntegration
 		int[] grades = new int[5];
 		for (int i = 0; i < studentList.size(); i++)
 		{
-			
-			if (studentList.get(i).tookCourse(course, semester, year))
+
+			if (semester.length() == 0 && year.length() == 0)
+			{
+				ArrayList<CourseData> coursesForCurrentStudent = studentList
+						.get(i).findCourseOverAllSemesters(course);
+				for (int j = 0; j < coursesForCurrentStudent.size(); j++)
+				{
+					char grade = coursesForCurrentStudent.get(j)
+							.getLetterGrade();
+
+					switch (grade)
+					{
+					case 'A':
+						grades[0]++;
+					case 'B':
+						grades[1]++;
+					case 'C':
+						grades[2]++;
+					case 'D':
+						grades[3]++;
+					default:
+						grades[4]++;
+
+					}
+				}
+
+			}
+			// ALL COURSES THAT FIT INSIDE YEAR AND SEMESTER ARE RETURNED AND
+			// ADDED TO GRADE COUNT
+			else if (course.length() == 0)
+			{
+				ArrayList<CourseData> coursesWithinYearAndSemester = studentList
+						.get(i)
+						.findCoursesWithinYearAndSemester(semester, year);
+				for (int j = 0; j < coursesWithinYearAndSemester.size(); i++)
+				{
+					char grade = coursesWithinYearAndSemester.get(j)
+							.getLetterGrade();
+
+					switch (grade)
+					{
+					case 'A':
+						grades[0]++;
+					case 'B':
+						grades[1]++;
+					case 'C':
+						grades[2]++;
+					case 'D':
+						grades[3]++;
+					default:
+						grades[4]++;
+
+					}
+				}
+			}
+			else if (studentList.get(i).tookCourse(course, semester, year))
 			{
 				char grade = studentList.get(i)
 						.findCourse(course, semester, year).getLetterGrade();
@@ -125,13 +161,7 @@ public class DataIntegration
 
 				}
 			}
-			else if (course.equals("")){
-				studentList.get(i).findCourse(semester, year);
-			}
-			else if (semester.equals("") && year.equals("")){
-					studentList.get(i).findCourse(semester, year);
-			}
-		
+
 		}
 		return grades;
 
