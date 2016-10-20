@@ -1,88 +1,77 @@
-import java.util.Locale;
 import java.util.Scanner;
 import java.io.*;
 
-public class main {
+public class input {
 
-	private static final Locale A = null;
-	private static final Locale a = null;
+	public static void main(String[] args){
 
-	private static final Locale S = null;
-	private static final Locale s = null;
-
-	private static final Locale G = null;
-	private static final Locale g = null;
-
-	private static final Locale E = null;
-	private static final Locale e = null;
-
-	String input;
+	// DataIntegration fetchData;
+	String input = "";
+	char choice = 0;
 	Scanner reader = new Scanner(System.in);
-	String c = reader.next()
+	String userID;
+	String courseNumber;
+	String year;
+	String semester;
 
-	while(input!='a'||input!='A')
+
+	while(choice!='e')
 	{
-		input.toUpperCase(A);
-		input.toLowerCase(a);
-		switch(input)
-		{
 		
-		System.out.println("Enter filename \n");
-		reader.next();
+		while (input.length() > 1 || input.length()==0){
+		System.out.println("Please make your selection:");
+		System.out.println("S or s: Add data to repository");
+		System.out.println("G or g: Export student data to file");
+		System.out.println("E or e: Exit program");
+		input = reader.next();
+		choice = input.toLowerCase().charAt(0);
+		}
+
 		
-		
-		System.out.println("Enter Semester and year \n");
-		reader.next();
-		
-		System.out.println("Enter course number \n");
-		reader.next();
-		
-		System.out.println("The number of students whose data is read equals: "+ input);
-		reader.next();
-	break;	
-		}}
 
-	while(input!='s'||input!='S')
-	{
-		switch(input)
-		{
-		input.toUpperCase(S);
-		input.toLowerCase(s);
-		System.out.println("Enter display student ID \n");
-		reader.next();
+		switch (choice) {
 
-		System.out.println("Enter filename to which data will be exported \n");
-		reader.next();
-		break;
-	}}
+		case 'a':
+			System.out.println("Enter file name");
+			input = reader.next();
 
-	while(input!='g'||input!='G')
-	{
-		switch(input)
-		{
-		input.toUpperCase(G);
-		input.toLowerCase(g);
+			System.out.println("Enter semester");
+			semester = reader.next();
 
-		System.out.println("Enter the course number \n");
-		reader.next();
+			System.out.println("Enter year");
+			year = reader.next();
 
-		System.out.println("Enter the semester and year \n");
-		reader.next();
+			System.out.println("Enter course number");
+			courseNumber = reader.next();
+			//fetchData.compileData(input, semester, year, courseNumber);
+			break;
 
-		System.out.println("Enter e or E to exit the program \n");
-		reader.next();
-		break;
-		}}
+		case 's':
+			System.out.println("Enter student ID");
+			userID = reader.next();
 
-	while(input!='e'||input!='E')
-	{
-		switch(input)
-		{
-		input.toUpperCase(E);
-		input.toLowerCase(e);
-		System.out.println("Exiting the program");
-		System.exit(0);
-		break;
-		}}
+			System.out.println("Enter output file name");
+			input = reader.next();
+			//fetchData.outputFile(userID, input);
+			break;
 
+		case 'g':
+			System.out.println("Enter course number");
+			courseNumber = reader.next();
+
+			System.out.println("Enter semester");
+			semester = reader.next();
+
+			System.out.println("Enter year");
+			year = reader.next();
+			int[] gradeList = new int[5];
+			//gradeList = fetchData.gradeSearch(courseNumber, semester, year);
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+}
 }
