@@ -10,19 +10,21 @@ public class Student
 
 	public Student()
 	{
-
+		coursesTaken = new ArrayList();
 	}
 
 	public Student(String firstName, String lastName, String userID)
 	{
 		name = lastName + ", " + firstName;
 		this.userID = userID;
+		coursesTaken = new ArrayList();
 	}
 	
 	public Student(String name, String userID)
 	{
 		this.name = name;
 		this.userID = userID;
+		coursesTaken = new ArrayList();
 	}
 	
 	public void addCourse(CourseData courseName)

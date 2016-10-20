@@ -14,22 +14,30 @@ public class DataIntegration
 	private StringTokenizer stk;
 	private Scanner readFile;
 	private File myFile;
+	private int[] commentSpots;
+	private int[] assignmentSpots;
+	private int[] nameSpots;
+	private int idSpot;
+	private int total;
+	private int letterGrade;
+	
 	
 	public DataIntegration()
 	{
 		masterList = new ArrayList();
 		studentList = new ArrayList();
+		commentSpots = new int[0];
+		assignmentSpots = new int[0];
+		nameSpots = new int[0];
+		idSpot = -1;
+		total = -1;
+		letterGrade = -1;
+		
 	}
 	
 	public void compileData(String fileName, String semester, String year)
 	{
 		String[] studentArray;
-		int[] commentSpots = new int[0];
-		int[] assignmentSpots = new int[0];
-		int[] nameSpots = new int[0];
-		int idSpot = -1;
-		int total = -1;
-		int letterGrade = -1;
 		boolean masterMade = false;
 		
 		try
@@ -44,9 +52,7 @@ public class DataIntegration
 		}
 		while (readFile.hasNextLine())
 		{
-			//stk = new StringTokenizer(readFile.nextLine(), ",", false);
 			String[] tokens = readFile.nextLine().split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-			System.out.println(java.util.Arrays.toString(tokens));
 			
 			if(!masterMade)
 			{
@@ -55,7 +61,7 @@ public class DataIntegration
 			}
 			
 			studentArray = new String[masterList.size()];
-			findKeywords(commentSpots, assignmentSpots, nameSpots, idSpot, total, letterGrade);
+			findKeywords();
 			
 			while (readFile.hasNextLine())
 			{
@@ -64,15 +70,11 @@ public class DataIntegration
 				{
 					studentArray[i] = tokens[i];
 				}
-				
-				System.out.println(java.util.Arrays.toString(studentArray));
-				
 				Student stu = createStudent(studentArray, nameSpots, idSpot);
 				CourseData cd = createCourseData(studentArray, assignmentSpots, commentSpots, total, letterGrade);
+				
 				stu.addCourse(cd);
 				studentList.add(stu);
-				
-				System.out.println(stu);
 			}
 		}
 		
@@ -148,28 +150,14 @@ public class DataIntegration
 	}
 	
 	private void createMaster(String[] tokens)
-	{
-		/*
-		String header = stk.nextToken();
-		String temp = header;
-		while(!temp.toLowerCase().contains("grade"))
-		{
-			masterList.add(temp);
-			header = stk.nextToken();
-			temp = header;
-		}
-		*/
-		
+	{	
 		for(String t : tokens)
 		{
 			masterList.add(t);
 		}
-		//masterList.add(temp);
-		System.out.println(masterList);
-		//System.out.println(temp);
 	}
 	
-	private void findKeywords(int[] comment, int[] assignment, int[] name, int id, int total, int letterGrade)
+	private void findKeywords()
 	{
 		String temp;
 		int size;
@@ -179,42 +167,42 @@ public class DataIntegration
 			
 			if(temp.contains("comment"))
 			{
-				size = comment.length;
-				comment = Arrays.copyOf(comment, size + 1);
-				comment[size] = i;
+				size = commentSpots.length;
+				commentSpots = Arrays.copyOf(commentSpots, size + 1);
+				commentSpots[size] = i;
 			}
 			
 			else if(temp.contains("name"))
 			{
-				size = name.length;
-				if(name.length == 1)
+				size = nameSpots.length;
+				if(nameSpots.length == 1)
 				{
 					if(temp.contains("first"))
 					{
 						int move;
-						name = Arrays.copyOf(name, size+1);
-						move = name[0];
-						name[1] = move;
-						name[0] = i;
+						nameSpots = Arrays.copyOf(nameSpots, size+1);
+						move = nameSpots[0];
+						nameSpots[1] = move;
+						nameSpots[0] = i;
 					}
 					
 					else
 					{
-						name = Arrays.copyOf(name, size+1);
-						name[size] = i;
+						nameSpots = Arrays.copyOf(nameSpots, size+1);
+						nameSpots[size] = i;
 					}
 				}
 				
 				else
 				{
-					name = Arrays.copyOf(name, size + 1);
-					name[size] = i;
+					nameSpots = Arrays.copyOf(nameSpots, size + 1);
+					nameSpots[size] = i;
 				}
 			}
 			
-			else if(temp.contains("id"))
+			else if(temp.contains("id") && !temp.contains("midterm"))
 			{
-				id = i;
+				idSpot = i;
 			}
 			
 			else if(temp.contains("total"))
@@ -229,9 +217,9 @@ public class DataIntegration
 				
 			else
 			{
-				size = assignment.length;
-				assignment = Arrays.copyOf(assignment, size + 1);
-				assignment[size] = i;
+				size = assignmentSpots.length;
+				assignmentSpots = Arrays.copyOf(assignmentSpots, size + 1);
+				assignmentSpots[size] = i;
 			}
 		}
 	}
@@ -239,13 +227,11 @@ public class DataIntegration
 	private Student createStudent(String[] studentArray, int[] nameSpots, int id)
 	{
 		Student stud;
-		System.out.println(java.util.Arrays.toString(nameSpots));
-		int x = nameSpots[0];
 		
 		if(nameSpots.length == 2)
-			stud = new Student(masterList.get(nameSpots[0]), masterList.get(nameSpots[1]), studentArray[id]);
+			stud = new Student(studentArray[nameSpots[0]], studentArray[nameSpots[1]], studentArray[id]);
 		else
-			stud = new Student(masterList.get(nameSpots[0]), studentArray[id]);
+			stud = new Student(studentArray[nameSpots[0]], studentArray[id]);
 		
 		return stud;
 	}
@@ -265,13 +251,13 @@ public class DataIntegration
 			
 			for(int x = 0; x < commentSpots.length; x++)
 			{
-				if(masterList.get(commentSpots[i]).contains(assignTitle))
+				if(masterList.get(commentSpots[x]).contains(assignTitle))
 				{
-					assignComment = studentArray[commentSpots[i]];
+					assignComment = studentArray[commentSpots[x]];
 				}
 			}
 			
-			if(assignComment.equals(null))
+			if(assignComment == (null))
 			{
 				assign = new Assignments(assignTitle, grade);
 			}

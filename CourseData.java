@@ -12,6 +12,11 @@ public class CourseData
 	private double overallGrade;
 	private ArrayList<Assignments> assignmentData;
 
+	public CourseData()
+	{
+		assignmentData = new ArrayList();
+	}
+	
 	public String getCourse()
 	{
 		return courseName;
