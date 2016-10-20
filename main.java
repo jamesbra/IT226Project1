@@ -29,7 +29,7 @@ public class input {
 
 		
 
-		switch (choice) {
+		switch (choice)  {
 
 		case 'a':
 			System.out.println("Enter file name");
