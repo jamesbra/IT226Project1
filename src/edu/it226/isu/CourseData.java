@@ -10,7 +10,20 @@ public class CourseData
 	private String year;
 	private char letterGrade;
 	private double overallGrade;
-	private ArrayList<Assignments> assignmentData;
+	private ArrayList<Assignments> assignmentList;
+
+	public CourseData()
+	{
+		assignmentList = new ArrayList();
+	}
+	
+	public CourseData(String courseName, String semester, String year)
+	{
+			this.courseName = courseName;
+			this.semester = semester;
+			this.year = year;
+			
+	}
 
 	public String getCourse()
 	{
@@ -35,14 +48,14 @@ public class CourseData
 	/**
 	 * This method will return the assignment title and grade
 	 */
-	@Override
-	public String toString()
+	public String assignmentGradeOutput()
 	{
 		String output = "";
-		for (int i = 0; i < assignmentData.size(); i++)
+		for (int i = 0; i < assignmentList.size(); i++)
 		{
-			output += assignmentData.get(i).getTitle() + "," + assignmentData.get(i).getGrade() + ",";
+			output += assignmentList.get(i).getGrade() + ",";
 		}
+		output += letterGrade + "\n";
 		return output;
 	}
 
@@ -52,12 +65,43 @@ public class CourseData
 	 */
 	public String constructColumns()
 	{
-		String output = "";
-		for (int i = 0; i < assignmentData.size(); i++){
-			output += courseName + "-" + semester + "-" + year + "-" + assignmentData.get(i).getTitle() + ",";
+		String output = "Student ID" + ",";
+		for (int i = 0; i < assignmentList.size(); i++)
+		{
+			output += courseName + "-" + semester.toUpperCase().charAt(0) + "-" + year + "-"
+					+ assignmentList.get(i).getTitle() + ",";
 		}
-		output += courseName + "-" + semester + "-" + year + "-" + "Letter Grade" + ",";
+		output += courseName + "-" + semester.toUpperCase().charAt(0) + "-" + year + "-"
+				+ "Letter Grade" + ",";
 		return output;
 	}
+	
+	public void addAssignment(Assignments assign)
+	{
+		assignmentList.add(assign);
+	}
+	
+	public void addTotalGrade(double total)
+	{
+		overallGrade = total;
+	}
+	
+	public void addLetterGrade(char grade)
+	{
+		letterGrade = grade;
+	}
 
+	public void setSemester(String semester)
+	{
+		this.semester = semester;
+		
+	}
+	public void setCourseNumber(String courseNumber){
+		this.courseName = courseNumber;
+	}
+
+	public void setYear(String year)
+	{
+		this.year = year;
+	}
 }

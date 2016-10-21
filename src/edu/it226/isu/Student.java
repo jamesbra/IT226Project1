@@ -10,9 +10,23 @@ public class Student
 
 	public Student()
 	{
-
+		coursesTaken = new ArrayList();
 	}
 
+	public Student(String firstName, String lastName, String userID)
+	{
+		name = lastName + ", " + firstName;
+		this.userID = userID;
+		coursesTaken = new ArrayList();
+	}
+	
+	public Student(String name, String userID)
+	{
+		this.name = name;
+		this.userID = userID;
+		coursesTaken = new ArrayList();
+	}
+	
 	public void addCourse(CourseData courseName)
 	{
 		coursesTaken.add(courseName);
@@ -30,15 +44,14 @@ public class Student
 
 	public String printCourses()
 	{
-		String data = userID;
+		String data = "";
 		for (int i = 0; i< coursesTaken.size(); i++){
 			data += coursesTaken.get(i).constructColumns() + ",";
 		}
-		data += "\n";
+		data += "\n" + userID + ",";
 		for (int i = 0; i < coursesTaken.size(); i++)
 		{
-			data += coursesTaken.get(i).toString()
-					+ "\n";
+			data += coursesTaken.get(i).assignmentGradeOutput();
 		}
 		return data;
 	}
@@ -71,9 +84,30 @@ public class Student
 		return null;
 	}
 
-	public boolean findCourse(String semester, String year)
+	public ArrayList<CourseData> findCourseOverAllSemesters(String course)
 	{
-		// TODO Auto-generated method stub
-		return false;
+		ArrayList<CourseData> coursesToBeReturned = new ArrayList<CourseData>();
+		for (int i = 0; i < coursesTaken.size(); i++){
+			if (coursesTaken.get(i).getCourse().equals(course)){
+				coursesToBeReturned.add(coursesTaken.get(i));
+			}
+		}
+		return coursesToBeReturned;
+		
+	}
+	
+	public ArrayList<CourseData> findCoursesWithinYearAndSemester(String semester, String year){
+		ArrayList<CourseData> coursesToBeReturned = new ArrayList<CourseData>();
+		for (int i = 0; i < coursesTaken.size(); i++){
+			if (coursesTaken.get(i).getSemester().equals(semester) && coursesTaken.get(i).getYear().equals(year)){
+				coursesToBeReturned.add(coursesTaken.get(i));
+			}
+		}
+		return coursesToBeReturned;
+	}
+	
+	public String toString()
+	{
+		return name + " " + userID;
 	}
 }
